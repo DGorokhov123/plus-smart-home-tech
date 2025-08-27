@@ -1,4 +1,4 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,9 +9,6 @@ import ru.yandex.practicum.dto.hub.DeviceAddedEvent;
 import ru.yandex.practicum.dto.hub.DeviceType;
 import ru.yandex.practicum.dto.hub.HubEvent;
 import ru.yandex.practicum.dto.hub.UnknownHubEvent;
-import ru.yandex.practicum.dto.sensor.ClimateSensorEvent;
-import ru.yandex.practicum.dto.sensor.SensorEvent;
-import ru.yandex.practicum.dto.sensor.UnknownSensorEvent;
 
 import java.time.Instant;
 
