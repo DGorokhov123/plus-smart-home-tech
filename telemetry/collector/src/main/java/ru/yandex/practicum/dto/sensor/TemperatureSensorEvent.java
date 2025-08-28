@@ -12,10 +12,14 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TemperatureSensorEvent extends SensorEvent {
 
-    @NotNull @Min(-273) @Max(500)
+    @NotNull(message = "Field temperatureC shouldn't be null")
+    @Min(value = -273, message = "Field temperatureC is out of bounds")
+    @Max(value = 500, message = "Field temperatureC is out of bounds")
     private Integer temperatureC;
 
-    @NotNull @Min(-459) @Max(932)
+    @NotNull(message = "Field temperatureF shouldn't be null")
+    @Min(value = -459, message = "Field temperatureF is out of bounds")
+    @Max(value = 932, message = "Field temperatureF is out of bounds")
     private Integer temperatureF;
 
 }

@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class SwitchSensorEvent extends SensorEvent {
 
-    @NotNull
+    @NotNull(message = "Field state shouldn't be null")
     private Boolean state;
 
 }

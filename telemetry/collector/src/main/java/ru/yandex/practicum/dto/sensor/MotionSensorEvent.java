@@ -12,13 +12,17 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class MotionSensorEvent extends SensorEvent {
 
-    @NotNull @Min(0) @Max(100)
+    @NotNull(message = "Field linkQuality shouldn't be null")
+    @Min(value = 0, message = "Field linkQuality is out of bounds")
+    @Max(value = 100, message = "Field linkQuality is out of bounds")
     private Integer linkQuality;
 
-    @NotNull
+    @NotNull(message = "Field motion shouldn't be null")
     private Boolean motion;
 
-    @NotNull @Min(0) @Max(500)
+    @NotNull(message = "Field voltage shouldn't be null")
+    @Min(value = 0, message = "Field voltage is out of bounds")
+    @Max(value = 500, message = "Field voltage is out of bounds")
     private Integer voltage;
 
 }

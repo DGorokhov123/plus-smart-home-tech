@@ -12,10 +12,14 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class LightSensorEvent extends SensorEvent {
 
-    @NotNull @Min(0) @Max(100)
+    @NotNull(message = "Field linkQuality shouldn't be null")
+    @Min(value = 0, message = "Field linkQuality is out of bounds")
+    @Max(value = 100, message = "Field linkQuality is out of bounds")
     private Integer linkQuality;
 
-    @NotNull @Min(0) @Max(100)
+    @NotNull(message = "Field luminosity shouldn't be null")
+    @Min(value = 0, message = "Field luminosity is out of bounds")
+    @Max(value = 1000, message = "Field luminosity is out of bounds")
     private Integer luminosity;
 
 }

@@ -10,13 +10,19 @@ import lombok.*;
 @ToString(callSuper = true)
 public class ClimateSensorEvent extends SensorEvent {
 
-    @NotNull @Min(-273) @Max(500)
+    @NotNull(message = "Field temperatureC shouldn't be null")
+    @Min(value = -273, message = "Field temperatureC is out of bounds")
+    @Max(value = 500, message = "Field temperatureC is out of bounds")
     private Integer temperatureC;
 
-    @NotNull @Min(0) @Max(100)
+    @NotNull(message = "Field humidity shouldn't be null")
+    @Min(value = 0, message = "Field humidity is out of bounds")
+    @Max(value = 100, message = "Field humidity is out of bounds")
     private Integer humidity;
 
-    @NotNull @Min(0) @Max(100_000)
+    @NotNull(message = "Field co2Level shouldn't be null")
+    @Min(value = 0, message = "Field co2Level is out of bounds")
+    @Max(value = 100_000, message = "Field co2Level is out of bounds")
     private Integer co2Level;
 
 }

@@ -23,10 +23,10 @@ import java.time.Instant;
 })
 public abstract class SensorEvent {
 
-    @NotBlank
+    @NotBlank(message = "Field id shouldn't be blank")
     protected String id;
 
-    @NotBlank
+    @NotBlank(message = "Field hubId shouldn't be blank")
     protected String hubId;
 
     protected Instant timestamp = Instant.now();
