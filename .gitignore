@@ -125,3 +125,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/start-hub-router.bat
+/start-hub-router.sh
+/hub-router.jar
