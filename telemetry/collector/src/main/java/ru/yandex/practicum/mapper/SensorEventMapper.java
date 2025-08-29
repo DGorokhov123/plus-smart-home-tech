@@ -13,7 +13,8 @@ public class SensorEventMapper {
             case MotionSensorEvent e -> toAvro(e);
             case SwitchSensorEvent e -> toAvro(e);
             case TemperatureSensorEvent e -> toAvro(e);
-            default -> throw new IllegalArgumentException("Unsupported Sensor Event Type: " + event.getClass().getName());
+            default ->
+                    throw new IllegalArgumentException("Unsupported Sensor Event Type: " + event.getClass().getName());
         };
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
