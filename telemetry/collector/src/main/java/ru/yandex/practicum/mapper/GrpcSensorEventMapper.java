@@ -1,7 +1,6 @@
 package ru.yandex.practicum.mapper;
 
 import org.apache.avro.specific.SpecificRecordBase;
-import ru.yandex.practicum.dto.sensor.*;
 import ru.yandex.practicum.grpc.telemetry.event.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
@@ -16,8 +15,7 @@ public class GrpcSensorEventMapper {
             case SensorEventProto.PayloadCase.MOTION_SENSOR -> toAvro(event.getMotionSensor());
             case SensorEventProto.PayloadCase.SWITCH_SENSOR -> toAvro(event.getSwitchSensor());
             case SensorEventProto.PayloadCase.TEMPERATURE_SENSOR -> toAvro(event.getTemperatureSensor());
-            default ->
-                    throw new IllegalArgumentException("Unsupported Sensor Event Type: " + event.getPayloadCase());
+            default -> throw new IllegalArgumentException("Unsupported Sensor Event Type: " + event.getPayloadCase());
         };
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
