@@ -1,7 +1,6 @@
 package ru.yandex.practicum.mapper;
 
 import org.apache.avro.specific.SpecificRecordBase;
-import ru.yandex.practicum.dto.hub.*;
 import ru.yandex.practicum.grpc.telemetry.event.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
@@ -66,7 +65,8 @@ public class GrpcHubEventMapper {
         Object value = switch (condition.getValueCase()) {
             case ScenarioConditionProto.ValueCase.BOOL_VALUE -> condition.getBoolValue();
             case ScenarioConditionProto.ValueCase.INT_VALUE -> condition.getIntValue();
-            default -> throw new IllegalArgumentException("Unsupported Scenario Condition Value Type: " + condition.getValueCase());
+            default ->
+                    throw new IllegalArgumentException("Unsupported Scenario Condition Value Type: " + condition.getValueCase());
         };
         return ScenarioConditionAvro.newBuilder()
                 .setSensorId(condition.getSensorId())
