@@ -128,3 +128,4 @@ $RECYCLE.BIN/
 /start-hub-router.bat
 /start-hub-router.sh
 /hub-router.jar
+/postgres/
