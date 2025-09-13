@@ -41,10 +41,16 @@ public class SnapshotServiceImpl implements SnapshotService {
         if (snapshot != null) state = snapshot.getSensorsState().get(event.getId());
 
         // Nothing to do if state: 1. Exists 2. Hasn't been changed
-        if (state != null && Objects.equals(state.getData(), event.getPayload())) return;
+        if (state != null && Objects.equals(state.getData(), event.getPayload())) {
+            log.debug("Nothing to do: State exists and hasn't been changed");
+            return;
+        }
 
         // Nothing to do if state: 1. Exists 2. Has timestamp later than incoming event
-        if (state != null && state.getTimestamp() != null && state.getTimestamp().isAfter(event.getTimestamp())) return;
+        if (state != null && state.getTimestamp() != null && state.getTimestamp().isAfter(event.getTimestamp())) {
+            log.debug("Nothing to do: State exists and has timestamp later than incoming event");
+            return;
+        }
 
         SensorStateAvro newState = SensorStateAvro.newBuilder()
                 .setTimestamp(event.getTimestamp())
