@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class SnapshotServiceImpl implements SnapshotService {
 
     private final Map<String, SpecificRecordBase> sensorStates = new HashMap<>();
@@ -42,6 +41,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private HubRouterControllerGrpc.HubRouterControllerBlockingStub grpcClient;
 
     @Override
+    @Transactional(readOnly = true)
     public void handleSnapshot(SensorsSnapshotAvro snapshot) {
         log.debug("Received Snapshot: {}", snapshot);
         if (snapshot == null || snapshot.getHubId() == null || snapshot.getTimestamp() == null || snapshot.getSensorsState() == null) {

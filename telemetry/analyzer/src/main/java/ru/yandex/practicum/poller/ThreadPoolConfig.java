@@ -15,6 +15,7 @@ public class ThreadPoolConfig {
         executor.setQueueCapacity(100);
         executor.setThreadNamePrefix("kafka-poller-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(10);
         executor.initialize();
         return executor;
     }
