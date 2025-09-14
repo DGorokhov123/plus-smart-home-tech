@@ -14,20 +14,17 @@ import org.springframework.stereotype.Component;
 public class PollingStarter {
 
     private final ThreadPoolTaskExecutor executor;
-    private final HubEventPoller hubEventPoller;
-    private final SnapshotPoller snapshotPoller;
+    private final SensorEventPoller sensorEventPoller;
 
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady(ApplicationReadyEvent event) {
-        executor.execute(hubEventPoller);
-        executor.execute(snapshotPoller);
+        executor.execute(sensorEventPoller);
     }
 
     @EventListener(ContextClosedEvent.class)
     public void onApplicationShutdown(ContextClosedEvent event) {
         log.info("Application shutdown initiated, stopping pollers...");
-        hubEventPoller.closeConsumer();
-        snapshotPoller.closeConsumer();
+        sensorEventPoller.closeConsumer();
     }
 
 }

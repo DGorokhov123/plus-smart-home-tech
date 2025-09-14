@@ -20,7 +20,6 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class HubEventServiceImpl implements HubEventService {
 
     private final ActionRepository actionRepository;
@@ -29,6 +28,7 @@ public class HubEventServiceImpl implements HubEventService {
     private final SensorRepository sensorRepository;
 
     @Override
+    @Transactional(readOnly = false)
     public void handleHubEvent(HubEventAvro event) {
         log.debug("Received Hub Event: {}", event);
         if (event == null || event.getHubId() == null || event.getTimestamp() == null || event.getPayload() == null) {

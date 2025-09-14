@@ -4,6 +4,10 @@ smart-home-tech:
     hub-event-topic: telemetry.hubs.v1
     sensor-event-topic: telemetry.sensors.v1
     sensor-snapshot-topic: telemetry.snapshots.v1
+    hub-event-group-id: analyzer-consumer-hub-event-group-01
+    snapshot-group-id: analyzer-consumer-snapshot-group-01
+    auto-offset-reset: latest
+    enable-auto-commit: false
 
 logging:
   level:
@@ -17,6 +21,8 @@ management:
         include: health,metrics
 
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
   datasource:
     url: jdbc:postgresql://localhost:5432/shtech
     username: shtech
@@ -40,3 +46,6 @@ grpc:
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext
+
+server:
+  shutdown: graceful

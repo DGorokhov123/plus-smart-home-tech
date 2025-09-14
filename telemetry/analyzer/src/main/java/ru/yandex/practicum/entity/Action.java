@@ -25,7 +25,7 @@ public class Action {
     @Column(name = "sensor_id")
     private String sensorId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scenario_id")
     private Scenario scenario;
 

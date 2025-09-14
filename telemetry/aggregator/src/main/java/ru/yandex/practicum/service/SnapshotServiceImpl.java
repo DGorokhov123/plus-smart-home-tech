@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.kafka.KafkaProperties;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorStateAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
@@ -20,12 +20,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SnapshotServiceImpl implements SnapshotService {
 
+    private final KafkaProperties kafkaProperties;
     private final Producer<Void, SpecificRecordBase> producer;
 
     private final Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
-
-    @Value("${smart-home-tech.kafka.sensor-snapshot-topic}")
-    private String sensorSnapshotTopicName;
 
     @Override
     public void handleSensorEvent(SensorEventAvro event) {
@@ -66,7 +64,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         snapshot.getSensorsState().put(event.getId(), newState);
         snapshots.put(event.getHubId(), snapshot);
 
-        ProducerRecord<Void, SpecificRecordBase> record = new ProducerRecord<>(sensorSnapshotTopicName, snapshot);
+        ProducerRecord<Void, SpecificRecordBase> record = new ProducerRecord<>(kafkaProperties.getSensorSnapshotTopic(), snapshot);
         producer.send(record);
         log.debug("Sent: {}", snapshot);
     }
