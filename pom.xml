@@ -35,6 +35,11 @@
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <avro-maven-plugin.version>${avro.version}</avro-maven-plugin.version>
         <protobuf-plugin.version>3.8.1</protobuf-plugin.version>
+        <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
+
+        <!--       Modules       -->
+        <avro-schemas.version>1.0-SNAPSHOT</avro-schemas.version>
+        <proto-schemas.version>1.0-SNAPSHOT</proto-schemas.version>
     </properties>
 
     <dependencyManagement>
@@ -89,6 +94,19 @@
             </dependency>
 
             <!--    / GRPC dependencies management        -->
+
+            <dependency>
+                <groupId>ru.yandex.practicum</groupId>
+                <artifactId>avro-schemas</artifactId>
+                <version>${avro-schemas.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ru.yandex.practicum</groupId>
+                <artifactId>proto-schemas</artifactId>
+                <version>${proto-schemas.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -109,6 +127,11 @@
                     <groupId>io.github.ascopes</groupId>
                     <artifactId>protobuf-maven-plugin</artifactId>
                     <version>${protobuf-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
