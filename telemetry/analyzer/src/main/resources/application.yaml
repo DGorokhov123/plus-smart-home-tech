@@ -1,0 +1,51 @@
+smart-home-tech:
+  kafka:
+    bootstrap-servers: localhost:9092
+    hub-event-topic: telemetry.hubs.v1
+    sensor-event-topic: telemetry.sensors.v1
+    sensor-snapshot-topic: telemetry.snapshots.v1
+    hub-event-group-id: analyzer-consumer-hub-event-group-01
+    snapshot-group-id: analyzer-consumer-snapshot-group-01
+    auto-offset-reset: latest
+    enable-auto-commit: false
+
+logging:
+  level:
+    ru.yandex.practicum.service.SnapshotServiceImpl: DEBUG
+    ru.yandex.practicum.service.HubEventServiceImpl: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shtech
+    username: shtech
+    password: verysecretword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  sql:
+    init:
+      mode: always
+
+grpc:
+  client:
+    hub-router:
+      address: 'static://localhost:59090'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+server:
+  shutdown: graceful
