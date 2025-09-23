@@ -1,0 +1,22 @@
+smart-home-tech:
+  kafka:
+    bootstrap-servers: localhost:9092
+    hub-event-topic: telemetry.hubs.v1
+    sensor-event-topic: telemetry.sensors.v1
+
+server:
+  shutdown: graceful
+  port: 8080
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.springframework.validation: INFO
+    ru.yandex.practicum.service.EventServiceImpl: DEBUG
+    io.grpc: INFO
+
+management.endpoints.web.exposure.include: health,metrics
+
+grpc:
+  server:
+    port: 59091
