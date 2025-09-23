@@ -30,6 +30,7 @@
         <grpc-spring-boot-starter.version>3.1.0.RELEASE</grpc-spring-boot-starter.version>
         <protobuf.version>3.23.4</protobuf.version>
         <grpc.version>1.63.0</grpc.version>
+        <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
 
         <!--       Plugins       -->
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -105,6 +106,16 @@
                 <groupId>ru.yandex.practicum</groupId>
                 <artifactId>proto-schemas</artifactId>
                 <version>${proto-schemas.version}</version>
+            </dependency>
+
+            <!-- Spring Cloud dependency management -->
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>
