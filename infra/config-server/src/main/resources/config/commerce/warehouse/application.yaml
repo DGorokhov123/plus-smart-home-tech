@@ -1,0 +1,31 @@
+#smart-home-tech:
+
+#logging:
+#  level:
+#    ru.yandex.practicum.service.SnapshotServiceImpl: DEBUG
+#    ru.yandex.practicum.service.HubEventServiceImpl: DEBUG
+
+management.endpoints.web.exposure.include: health,metrics
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shtech?currentSchema=warehouse
+    username: shtech
+    password: verysecretword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 0
+  shutdown: graceful
