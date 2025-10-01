@@ -1,9 +1,3 @@
-#smart-home-tech:
-
-#logging:
-#  level:
-#    ru.yandex.practicum.service.SnapshotServiceImpl: DEBUG
-#    ru.yandex.practicum.service.HubEventServiceImpl: DEBUG
 
 management.endpoints.web.exposure.include: health,metrics
 
