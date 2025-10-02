@@ -39,4 +39,8 @@ public class ShoppingCart {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
 }
