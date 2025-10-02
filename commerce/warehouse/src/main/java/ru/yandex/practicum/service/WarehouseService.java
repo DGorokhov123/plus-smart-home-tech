@@ -2,6 +2,7 @@ package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
 import ru.yandex.practicum.dal.WarehouseProduct;
 import ru.yandex.practicum.dal.WarehouseProductRepository;
@@ -12,6 +13,7 @@ import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
 import ru.yandex.practicum.exception.warehouse.NoSpecifiedProductInWarehouseException;
 import ru.yandex.practicum.exception.warehouse.ProductInShoppingCartLowQuantityInWarehouseException;
 import ru.yandex.practicum.exception.warehouse.SpecifiedProductAlreadyInWarehouseException;
+import ru.yandex.practicum.logging.Logging;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,6 +30,8 @@ public class WarehouseService {
     private final AddressService addressService;
 
     // Добавить новый товар на склад.
+    @Logging
+    @Transactional(readOnly = false)
     public String createProduct(NewProductInWarehouseRequest request) {
         if (warehouseProductRepository.existsById(request.getProductId())) {
             throw new SpecifiedProductAlreadyInWarehouseException("Product already exists: id = " + request.getProductId());
@@ -38,6 +42,8 @@ public class WarehouseService {
     }
 
     // Предварительно проверить что количество товаров на складе достаточно для данной корзины продуктов.
+    @Logging
+    @Transactional(readOnly = true)
     public BookedProductsDto checkShoppingCart(ShoppingCartDto shoppingCartDto) {
         Map<String, Long> cartProductMap = shoppingCartDto.getProducts();
         List<WarehouseProduct> warehouseProducts = warehouseProductRepository.findAllById(cartProductMap.keySet());
@@ -93,6 +99,8 @@ public class WarehouseService {
     }
 
     // Принять товар на склад. (изменить кол-во товара)
+    @Logging
+    @Transactional(readOnly = false)
     public String changeQuantity(AddProductToWarehouseRequest request) {
         WarehouseProduct product = warehouseProductRepository.findById(request.getProductId()).orElseThrow(
                 () -> new NoSpecifiedProductInWarehouseException("Product is not found: id = " + request.getProductId())
@@ -103,6 +111,7 @@ public class WarehouseService {
     }
 
     // Предоставить адрес склада для расчёта доставки.
+    @Logging
     public AddressDto getAddress() {
         return addressService.getAddress();
     }

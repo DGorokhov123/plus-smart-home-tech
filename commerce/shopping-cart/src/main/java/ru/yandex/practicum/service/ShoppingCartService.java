@@ -13,6 +13,7 @@ import ru.yandex.practicum.dto.cart.ShoppingCartDto;
 import ru.yandex.practicum.exception.cart.NoActiveShoppingCartException;
 import ru.yandex.practicum.exception.cart.NoProductsInShoppingCartException;
 import ru.yandex.practicum.exception.warehouse.ProductInShoppingCartLowQuantityInWarehouseException;
+import ru.yandex.practicum.logging.Logging;
 
 import java.time.Instant;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ShoppingCartService {
 
     // Добавить товар в корзину.
     @Transactional(readOnly = false)
+    @Logging
     public ShoppingCartDto addProductsToCart(String username, Map<String, Long> addProductMap) {
         List<ShoppingCart> activeCarts = shoppingCartRepository.findByUsernameAndIsActiveOrderByCreatedAtDesc(username, true);
         ShoppingCart cart;
@@ -58,6 +60,7 @@ public class ShoppingCartService {
     }
 
     // Удалить указанные товары из корзины пользователя.
+    @Logging
     @Transactional(readOnly = false)
     public ShoppingCartDto removeProductsFromCart(String username, List<String> removeProductList) {
         List<ShoppingCart> activeCarts = shoppingCartRepository.findByUsernameAndIsActiveOrderByCreatedAtDesc(username, true);
@@ -85,6 +88,7 @@ public class ShoppingCartService {
 
     // Изменить количество товаров в корзине.
     @Transactional(readOnly = false)
+    @Logging
     public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         List<ShoppingCart> activeCarts = shoppingCartRepository.findByUsernameAndIsActiveOrderByCreatedAtDesc(username, true);
         if (activeCarts.isEmpty())
@@ -107,6 +111,7 @@ public class ShoppingCartService {
     }
 
     // Деактивация корзины товаров для пользователя.
+    @Logging
     @Transactional(readOnly = false)
     public String deactivateCart(String username) {
         shoppingCartRepository.deactivateByUsername(username);
@@ -114,6 +119,7 @@ public class ShoppingCartService {
     }
 
     // Получить актуальную корзину для авторизованного пользователя.
+    @Logging
     @Transactional(readOnly = false)
     public ShoppingCartDto getCartByUsername(String username) {
         List<ShoppingCart> activeCarts = shoppingCartRepository.findByUsernameAndIsActiveOrderByCreatedAtDesc(username, true);

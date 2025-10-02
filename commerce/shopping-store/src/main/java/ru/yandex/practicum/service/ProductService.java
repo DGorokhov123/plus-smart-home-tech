@@ -6,10 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dal.Product;
 import ru.yandex.practicum.dal.ProductRepository;
 import ru.yandex.practicum.dto.store.*;
 import ru.yandex.practicum.exception.store.ProductNotFoundException;
+import ru.yandex.practicum.logging.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     // Создание нового товара в ассортименте
+    @Logging
+    @Transactional(readOnly = false)
     public ProductDto createProduct(ProductDto productDto) {
         Product newProduct = ProductMapper.toNewEntity(productDto);
         productRepository.save(newProduct);
@@ -29,6 +33,8 @@ public class ProductService {
     }
 
     // Обновление товара в ассортименте, например уточнение описания, характеристик и т.д.
+    @Logging
+    @Transactional(readOnly = false)
     public ProductDto updateProduct(ProductDto productDto) {
         String productId = productDto.getProductId();
         if (productId == null) throw new IllegalArgumentException("Field 'productId' shouldn't be null");
@@ -54,6 +60,8 @@ public class ProductService {
     }
 
     // Удалить товар из ассортимента магазина. Функция для менеджерского состава.
+    @Logging
+    @Transactional(readOnly = false)
     public String removeProduct(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new ProductNotFoundException("Product is not found, id = " + productId)
@@ -64,6 +72,8 @@ public class ProductService {
     }
 
     // Установка статуса по товару. API вызывается со стороны склада.
+    @Logging
+    @Transactional(readOnly = false)
     public String setQuantityState(String productId, QuantityState quantityState) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new ProductNotFoundException("Product is not found, id = " + productId)
@@ -74,6 +84,8 @@ public class ProductService {
     }
 
     // Получить сведения по товару из БД.
+    @Logging
+    @Transactional(readOnly = true)
     public ProductDto getById(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new ProductNotFoundException("Product is not found, id = " + productId)
@@ -82,6 +94,8 @@ public class ProductService {
     }
 
     // Получение списка товаров по типу в пагинированном виде
+    @Logging
+    @Transactional(readOnly = true)
     public ProductCollectionDto getCollection(ProductCategory category, Integer page, Integer size, String sortString) {
         List<SortDto> sortList = parseSortString(sortString);
         Sort sort = sortList.stream()
