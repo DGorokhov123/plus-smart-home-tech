@@ -2,7 +2,7 @@ package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.caffeine.CaffeineCache;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,17 +21,11 @@ public class CacheController {
     public Map<String, Object> getCacheStats() {
         return cacheManager.getCacheNames().stream()
                 .map(cacheManager::getCache)
-                .filter(c -> c instanceof CaffeineCache)
-                .map(c -> (CaffeineCache) c)
+                .filter(c -> c instanceof ConcurrentMapCache)
+                .map(c -> (ConcurrentMapCache) c)
                 .collect(Collectors.toMap(
-                        CaffeineCache::getName,
-                        c -> Map.of(
-                                "hitCount", c.getNativeCache().stats().hitCount(),
-                                "missCount", c.getNativeCache().stats().missCount(),
-                                "hitRate", c.getNativeCache().stats().hitRate(),
-                                "evictionCount", c.getNativeCache().stats().evictionCount(),
-                                "size", c.getNativeCache().estimatedSize()
-                        )
+                        ConcurrentMapCache::getName,
+                        ConcurrentMapCache::getNativeCache
                 ));
     }
 

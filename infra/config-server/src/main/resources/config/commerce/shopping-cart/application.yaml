@@ -30,6 +30,8 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+  cache:
+    type: simple
 
 server:
   port: 0

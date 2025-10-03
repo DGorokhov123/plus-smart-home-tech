@@ -4,6 +4,9 @@ import feign.FeignException;
 import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,7 @@ public class ShoppingCartService {
 
     // Добавить товар в корзину.
     @Logging
+    @CachePut(value = "carts", key = "#username")
     @Retryable(
             retryFor = {OptimisticLockException.class, ConcurrentModificationException.class},
             maxAttempts = 3,
@@ -105,6 +109,7 @@ public class ShoppingCartService {
 
     // Удалить указанные товары из корзины пользователя.
     @Logging
+    @CachePut(value = "carts", key = "#username")
     @Transactional(readOnly = false)
     public ShoppingCartDto removeProductsFromCart(String username, List<String> removeProductList) {
         List<ShoppingCart> activeCarts = shoppingCartRepository.findByUsernameAndIsActiveOrderByCreatedAtDesc(username, true);
@@ -132,6 +137,7 @@ public class ShoppingCartService {
 
     // Изменить количество товаров в корзине.
     @Logging
+    @CachePut(value = "carts", key = "#username")
     @Retryable(
             retryFor = {OptimisticLockException.class, ConcurrentModificationException.class},
             maxAttempts = 3,
@@ -174,6 +180,7 @@ public class ShoppingCartService {
 
     // Деактивация корзины товаров для пользователя.
     @Logging
+    @CacheEvict(value = "carts", key = "#username")
     @Transactional(readOnly = false)
     public String deactivateCart(String username) {
         shoppingCartRepository.deactivateByUsername(username);
@@ -182,6 +189,7 @@ public class ShoppingCartService {
 
     // Получить актуальную корзину для авторизованного пользователя.
     @Logging
+    @Cacheable(value = "carts", key = "#username")
     @Transactional(readOnly = false)
     public ShoppingCartDto getCartByUsername(String username) {
         List<ShoppingCart> activeCarts = shoppingCartRepository.findByUsernameAndIsActiveOrderByCreatedAtDesc(username, true);
