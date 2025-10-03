@@ -1,6 +1,10 @@
 package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +29,7 @@ public class ProductService {
 
     // Создание нового товара в ассортименте
     @Logging
+    @CacheEvict(value = "productLists", allEntries = true)
     @Transactional(readOnly = false)
     public ProductDto createProduct(ProductDto productDto) {
         Product newProduct = ProductMapper.toNewEntity(productDto);
@@ -34,6 +39,8 @@ public class ProductService {
 
     // Обновление товара в ассортименте, например уточнение описания, характеристик и т.д.
     @Logging
+    @CachePut(value = "products", key = "#productDto.productId")
+    @CacheEvict(value = "productLists", allEntries = true)
     @Transactional(readOnly = false)
     public ProductDto updateProduct(ProductDto productDto) {
         String productId = productDto.getProductId();
@@ -61,6 +68,10 @@ public class ProductService {
 
     // Удалить товар из ассортимента магазина. Функция для менеджерского состава.
     @Logging
+    @Caching(evict = {
+            @CacheEvict(value = "products", key = "#productId"),
+            @CacheEvict(value = "productLists", allEntries = true)
+    })
     @Transactional(readOnly = false)
     public String removeProduct(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(
@@ -73,6 +84,10 @@ public class ProductService {
 
     // Установка статуса по товару. API вызывается со стороны склада.
     @Logging
+    @Caching(evict = {
+            @CacheEvict(value = "products", key = "#productId"),
+            @CacheEvict(value = "productLists", allEntries = true)
+    })
     @Transactional(readOnly = false)
     public String setQuantityState(String productId, QuantityState quantityState) {
         Product product = productRepository.findById(productId).orElseThrow(
@@ -85,6 +100,7 @@ public class ProductService {
 
     // Получить сведения по товару из БД.
     @Logging
+    @Cacheable(value = "products", key = "#productId")
     @Transactional(readOnly = true)
     public ProductDto getById(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(
@@ -95,6 +111,10 @@ public class ProductService {
 
     // Получение списка товаров по типу в пагинированном виде
     @Logging
+    @Cacheable(
+            value = "productLists",
+            key = "#category.name() + '_p' + #page + 's' + #size + '_' + #sortString"
+    )
     @Transactional(readOnly = true)
     public ProductCollectionDto getCollection(ProductCategory category, Integer page, Integer size, String sortString) {
         List<SortDto> sortList = parseSortString(sortString);

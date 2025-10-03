@@ -23,6 +23,10 @@ spring:
   sql:
     init:
       mode: always
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
 
 server:
   port: 0
