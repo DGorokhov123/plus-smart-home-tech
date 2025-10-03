@@ -3,6 +3,7 @@ logging:
   level:
     io.github.resilience4j.circuitbreaker: INFO
     ru.yandex.practicum.client: DEBUG
+    ru.yandex.practicum.service: DEBUG
 
 management:
   endpoints.web.exposure.include: health,metrics

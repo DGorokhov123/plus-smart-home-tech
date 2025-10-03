@@ -1,4 +1,8 @@
 
+logging:
+  level:
+    ru.yandex.practicum.service: DEBUG
+
 management.endpoints.web.exposure.include: health,metrics
 
 spring:
