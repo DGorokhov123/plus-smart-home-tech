@@ -3,7 +3,19 @@ logging:
   level:
     ru.yandex.practicum.service: DEBUG
 
-management.endpoints.web.exposure.include: health,metrics
+info:
+  app:
+    name: warehouse
+    description: Smart Home Tech Project
+    version: 1.0-SNAPSHOT
+  company:
+    name: Yandex Practicum
+
+management:
+  endpoints.web.exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+  metrics.export.prometheus.enabled: true
+  info.env.enabled: true
 
 spring:
   lifecycle:

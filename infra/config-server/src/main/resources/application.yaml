@@ -1,3 +1,17 @@
+info:
+  app:
+    name: config-server
+    description: Smart Home Tech Project
+    version: 1.0-SNAPSHOT
+  company:
+    name: Yandex Practicum
+
+management:
+  endpoints.web.exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+  metrics.export.prometheus.enabled: true
+  info.env.enabled: true
+
 spring:
   application:
     name: config-server
@@ -13,6 +27,7 @@ spring:
 
 server:
   port: 0
+  shutdown: graceful
 
 logging:
   level:
@@ -22,7 +37,7 @@ eureka:
   client:
     registerWithEureka: true
     serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
+      defaultZone: http://localhost:8761/eureka/
   instance:
     preferIpAddress: false
     hostname: localhost

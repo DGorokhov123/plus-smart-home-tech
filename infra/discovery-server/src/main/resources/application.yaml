@@ -1,13 +1,28 @@
+info:
+  app:
+    name: discovery-server
+    description: Smart Home Tech Project
+    version: 1.0-SNAPSHOT
+  company:
+    name: Yandex Practicum
+
+management:
+  endpoints.web.exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+  metrics.export.prometheus.enabled: true
+  info.env.enabled: true
+
 spring:
   application:
     name: discovery-server
 
 server:
-  port: ${EUREKA_PORT:8761}
+  port: 8761
+  shutdown: graceful
 
 eureka:
   instance:
-    hostname: ${EUREKA_HOST:localhost}
+    hostname: localhost
   client:
     registerWithEureka: false
     fetchRegistry: false
