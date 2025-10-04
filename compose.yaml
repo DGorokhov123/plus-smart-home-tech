@@ -50,3 +50,75 @@ services:
       timeout: 5s
       interval: 5s
       retries: 10
+
+  discovery-server:
+    build: infra/discovery-server
+    image: discovery-server
+    container_name: discovery-server
+    restart: on-failure
+    ports:
+      - "8761:8761"
+    environment:
+      - eureka.instance.hostname=discovery-server
+
+  config-server:
+    build: infra/config-server
+    image: config-server
+    container_name: config-server
+    restart: on-failure
+    ports:
+      - "8181:8181"
+    depends_on:
+      - discovery-server
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+      - eureka.instance.hostname=config-server
+      - server.port=8181
+
+  shopping-store:
+    build: commerce/shopping-store
+    image: shopping-store
+    container_name: shopping-store
+    restart: on-failure
+    ports:
+      - "8185:8185"
+    depends_on:
+      - discovery-server
+      - config-server
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+      - eureka.instance.hostname=shopping-store
+      - server.port=8185
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shtech?currentSchema=store
+
+  warehouse:
+    build: commerce/warehouse
+    image: warehouse
+    container_name: warehouse
+    restart: on-failure
+    ports:
+      - "8186:8186"
+    depends_on:
+      - discovery-server
+      - config-server
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+      - eureka.instance.hostname=warehouse
+      - server.port=8186
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shtech?currentSchema=warehouse
+
+  shopping-cart:
+    build: commerce/shopping-cart
+    image: shopping-cart
+    container_name: shopping-cart
+    restart: on-failure
+    ports:
+      - "8187:8187"
+    depends_on:
+      - discovery-server
+      - config-server
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+      - eureka.instance.hostname=shopping-cart
+      - server.port=8187
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shtech?currentSchema=cart

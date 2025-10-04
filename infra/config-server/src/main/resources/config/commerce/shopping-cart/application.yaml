@@ -1,0 +1,62 @@
+
+logging:
+  level:
+    io.github.resilience4j.circuitbreaker: INFO
+    ru.yandex.practicum.client: DEBUG
+    ru.yandex.practicum.service: DEBUG
+
+info:
+  app:
+    name: shopping-cart
+    description: Smart Home Tech Project
+    version: 1.0-SNAPSHOT
+  company:
+    name: Yandex Practicum
+
+management:
+  endpoints.web.exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+  metrics.export.prometheus.enabled: true
+  info.env.enabled: true
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shtech?currentSchema=cart
+    username: shtech
+    password: verysecretword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+  sql:
+    init:
+      mode: always
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+  cache:
+    type: simple
+
+server:
+  port: 0
+  shutdown: graceful
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: COUNT_BASED
+      minimumNumberOfCalls: 5
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      ignoreExceptions:
+        - feign.FeignException.FeignClientException

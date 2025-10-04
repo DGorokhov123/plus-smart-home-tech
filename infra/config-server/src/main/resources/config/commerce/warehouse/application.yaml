@@ -1,0 +1,41 @@
+
+logging:
+  level:
+    ru.yandex.practicum.service: DEBUG
+
+info:
+  app:
+    name: warehouse
+    description: Smart Home Tech Project
+    version: 1.0-SNAPSHOT
+  company:
+    name: Yandex Practicum
+
+management:
+  endpoints.web.exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+  metrics.export.prometheus.enabled: true
+  info.env.enabled: true
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shtech?currentSchema=warehouse
+    username: shtech
+    password: verysecretword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 0
+  shutdown: graceful

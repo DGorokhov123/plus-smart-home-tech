@@ -2,6 +2,7 @@ package ru.yandex.practicum.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,7 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
+@Disabled("Выполнять только при запущенных Discovery and Config servers")
 @SpringBootTest
 public class SensorEventJsonTest {
 
