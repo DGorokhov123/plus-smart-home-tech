@@ -3,7 +3,7 @@ logging:
   level:
     io.github.resilience4j.circuitbreaker: INFO
     ru.yandex.practicum.client: DEBUG
-    ru.yandex.practicum.service: DEBUG
+    ru.yandex.practicum.logging: DEBUG
 
 info:
   app:

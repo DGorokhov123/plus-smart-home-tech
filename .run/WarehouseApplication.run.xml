@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="WarehouseApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="WarehouseApplication" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="ru.yandex.practicum.WarehouseApplication" />
     <module name="warehouse" />
     <extension name="coverage">

@@ -1,7 +1,7 @@
 
 logging:
   level:
-    ru.yandex.practicum.service: DEBUG
+    ru.yandex.practicum.logging: DEBUG
 
 info:
   app:
